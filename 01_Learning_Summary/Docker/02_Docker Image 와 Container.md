@@ -1,7 +1,7 @@
 
 ## docker 구성요소
 
-![[docker_archi.png]]
+![docker_archi.png](img/docker_archi.png)
 
 - docker client : docker 명령어가 클라이언트 역할
 - docker host : docker engin(daemon) 이 띄워저 있는 서버
@@ -15,7 +15,7 @@
 - 이미지와 컨테이너는 도커에서 사용하는 가장 기본적인 단위
 - 이미지와 컨테이너는 1:N 관계
 
-![[docker_and_image.png]]
+![docker_and_image.png](img/docker_and_image.png)
 #### image
 
 - 컨테이너를 생성할 때 필요로 하는 요소
