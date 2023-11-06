@@ -1,10 +1,10 @@
 ## 컨테이너 라이프 사이클
 
-![Untitled](img/lifecycle/lifecycle1.png)
+![Untitled](lifecycle1.png)
 
 - 복잡한 버전
 
-![Untitled](img/lifecycle/lifecycle2.png)
+![Untitled](lifecycle2.png)
 
 ## 컨테이너 시작
 
@@ -42,7 +42,7 @@ docker ps -a
 
 ### 컨테이너 시작 주요 옵션
 
-![Untitled](img/lifecycle/container-options.png)
+![Untitled](container-options.png)
 
 |옵션|설명|
 |---|---|
@@ -92,13 +92,13 @@ docker run -i -t ubuntu:pocal
 
 ## 컨테이너 상태 확인
 
-![Untitled](img/lifecycle/container-status.png)
+![Untitled](container-status.png)
 
 - 컨테이너에 문제가 발생하면 inspect 를 사용해서 확인 가능
 
 ### 컨테이너 종료
 
-![Untitled](img/lifecycle/container-kill.png)
+![Untitled](container-kill.png)
 
 - kill 옵션으로 종료하면 강제 종료 되기 때문에 로그가 남지 않음
 
@@ -118,6 +118,6 @@ docker ps -a -q
 
 ### 컨테이너 삭제
 
-![Untitled](img/lifecycle/container-remove.png)
+![Untitled](container-remove.png)
 
 #docker 
