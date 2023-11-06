@@ -4,7 +4,7 @@
 #### 1. Collection 생성
 - 새로운 컬랙션을 만든다.
 
-![[Pasted image 20231030191549.png]]
+![creae-collection.png](img/signature/create-collection.png)
 
 
 #### 2. Pre-Script 작성
@@ -49,7 +49,7 @@ pm.request.addHeader({ key: "x-ncp-apigw-timestamp", value: timestamp });
 ```
 
 #### 3. Collection Variables 등록 
-![[Pasted image 20231030193329.png]]
+![collection-variables.png](img/signature/collection-variables.png)
 
 - Variables 에 accessKey 를 등록하고 accessKey, secretKey 의 값을 초기화 한다.
 - 주의 : Current value 에 값이 들어가 있어야 한다.
