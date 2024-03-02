@@ -11,7 +11,7 @@
 ```shell
 $ ll / | grep swap # swap 파일이 있는지 확인
 $ free -h 
-$ swapon -s
+$ swapon -s # swapfile 위치까지 알려줌
 ```
 
 ![free.png](./img/free.png)
@@ -51,3 +51,6 @@ $ free -h
 https://jw910911.tistory.com/122 (여기는 설명이 상세하다.)
 https://jaykos96.tistory.com/13
 https://ssue-dev.tistory.com/entry/Linux-Swap-Memory-%EC%8A%A4%EC%99%91-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%84%A4%EC%A0%95-%EB%B0%A9%EB%B2%95 (좀더 고급 활용을 볼 수 있다)
+
+
+rocky os : https://oops4u.tistory.com/2542
