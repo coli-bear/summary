@@ -1,6 +1,6 @@
 ## 도커 네트워크 구조
 
-![Untitled](./img/networks/networks-archi.png)
+![Untitled](networks-archi.png)
 
 - 도커 컨테이너 생성시 사용할 기본 네트워크 기정 가능
 - 지정하지 않으면 docker0 이라는 브릿지 네트워크 사용
@@ -8,7 +8,7 @@
 - docker0이 veth 와 eth 간 다리 역할을 함
 - veth 는 컨테이너의 개수만큼 생성 됨
 
-![Untitled](./img/networks/networks-command.png)
+![Untitled](networks-command.png)
 
 ## 컨테이너 포트 노출
 
@@ -50,11 +50,11 @@ curl: (7) Failed to connect to localhost port 80 after 0 ms: Connection refused
 
 ### 네트워크 드라이버 분류
 
-![Untitled](./img/networks/networks-driver.png)
+![Untitled](networks-driver.png)
 
 ### 동작 방식 별 분류
 
-![Untitled](./img/networks/networks-active.png)
+![Untitled](networks-active.png)
 
 - bridge
     - docker0 : 기본적으로 생성

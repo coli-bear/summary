@@ -1,6 +1,6 @@
 ## 도커 이미지 구조
 
-![Untitled](./img/build/docker-image-archi.png)
+![Untitled](docker-image-archi.png)
 
 - 샘플 구조로 nginx 는 ubuntu 기반으로 만들어지고 web app은 nginx 기반으로 만들어져 있음
 - 웹엡 이미지 기반의 컨테이너를 생성하게 되면 웹엡 이미지가 이미지 레이어라는 형태로 컨테이너가 실행될때 복사가 되고 해당 레이어는 읽기 전용 레이어로 생성되고, 컨테이너가 생성될 때 마다 컨테이너 레이어에 읽기쓰기가 가능한 레이어로 생성 된다.
@@ -14,7 +14,7 @@ docker images
 docker inspect nginx
 ```
 
-![Untitled](./img/build/docker-image-inspect.png)
+![Untitled](docker-image-inspect.png)
 
 ## Dockerfile 없이 이미지 생성
 
@@ -57,11 +57,11 @@ gcr.io/k8s-minikube/kicbase   v0.0.30   1312ccd2422d   3 months ago    1.14GB
 
 - ubuntu:focal layer
 
-![Untitled](./img/build/docker-image-ubuntu-layer.png)
+![Untitled](docker-image-ubuntu-layer.png)
 
 - my-ubuntu layer
 
-![Untitled](./img/build/docker-image-ubuntu-my-layer.png)
+![Untitled](docker-image-ubuntu-my-layer.png)
 
 ## Dockerfile 이용하여 이미지 생성
 
@@ -319,7 +319,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 이렇게 하면 이미지 빌드 시간은 실제 프로젝트 빌드하면서 변경 가능성이 있는 src 이후에서만 다시 동작하게 되며, release block 에서는 필요한 파일만 갖게 되므로(node_modules 를 미포함 시킨다) 이미지의 경량화를 할 수 있다.
 
-![multi](./img/build/docker-image-multi-stage-build.png)
+![multi](docker-image-multi-stage-build.png)
 
 위 이미지를 보면 sample-without-multi-stage 이미지는 2.3GB가 되고, sample-with-multi-stage 는 50.39MB 가 되는것을 확인할 수 있다. 
 이 것은 node_modules 의 차이가 크다고 볼 수 있다. 

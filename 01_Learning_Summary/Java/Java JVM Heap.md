@@ -132,7 +132,7 @@ $ jhsdb jmap
 docker 환경에서 힙 모니터링을 위해서는 아래 옵션을 활성화 해야한다.
 
 ```shell 
-docker run -d `--cap-add=SYS_PTRACE` {image}
+docker run -d `--cap-add=SYS_PTR`ACE` {image}
 ```
 
 나는 docker-compose 를 이용해서 하므로 docker-compose.yml 에 아래와 같이 추가했다.
