@@ -1,6 +1,6 @@
 ## docker 레이어 아키텍처
 
-![Untitled](layered-archi.png)
+![Untitled](./img/volumes/layered-archi.png)
 
 - 기본적으로 image layer와 container layer로 나뉨
 - image layer는 읽기 전용으로 이미지를 불러 사용하며 Dockerfile 명세를 기반으로 동작
@@ -45,7 +45,7 @@ drwxr-xr-x 2 root   root   4096 May  9 10:47 html/
 - 볼륨 컨테이너만 만들고 아무것도 하지 않음
 - 볼륨 컨테이너만 참고하여 데이터 공유
 
-![Untitled](volume-container.png)
+![Untitled](./img/volumes/volume-container.png)
 
 ```bash
 docker run -d --name my-volume -it -v /opt/html:/usr/share/nginx/html ubuntu:focal
@@ -64,7 +64,7 @@ docker run -d --name f-nginx2 --volumes-from web-volume -p 80:80 nginx
 docker inspacet f-nginx
 ```
 
-![Untitled](docker-inspect.png)
+![Untitled](./img/volumes/docker-inspect.png)
 
 ## 도커 볼륨
 
