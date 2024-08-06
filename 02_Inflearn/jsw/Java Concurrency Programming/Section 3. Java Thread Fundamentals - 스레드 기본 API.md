@@ -59,7 +59,7 @@ throws InterruptedException {
 
 `InterruptedException` 이 발생하면 스레드는 수면상태에서 깨어나고 실행대기 상태로 전환되어 실행상태를 기다린다.
 
-## Code
+### Code
 
 ```java
 try {
@@ -191,7 +191,7 @@ throws InterruptedException {
 - 다른 스레드는 `join()` 을 수행 중인 스레드에게 인터럽트(중단, 멈춤) 신호를 보낼 수 이다.
 - `InterruptedException` 예외 발생시 스레드는 대기상태에서 실행상태로 전환되어 실행상태를 기다린다.
 
-## Code
+### Code
 
 ```java
 try {
@@ -541,7 +541,7 @@ public class Thread {
 
 ```
 
-`setName` 메서드를 호출하기전 `new Thread` 를 이요해서 초기화 해주게 되는데 위에 코드를 보면 nextThreadNum() 이 호출되는것을 확인할 수 있다. 
+`setName` 메서드를 호출하기전 `new Thread` 를 이용해서 초기화 해주게 되는데 위에 코드를 보면 nextThreadNum() 이 호출되는것을 확인할 수 있다. 
 
 실제 초기화를 위한 생성자에서는 name이 없으면 npe 가 발생하기 때문에 기본 생성자들 에서는 nextThreadNum을 무조건 호출하게 되어있었다.
 
@@ -576,4 +576,200 @@ public class Thread {
 
 
 # Priority
+
+하나의 CPU 가 여러 스레드를 관리해야 하는 경우 스케쥴링을 어떠한 기준에 의해 관리해야 한다. 
+Java 에서는 고정 우선순위 선점형 스케쥴링으로 알려진 매우 단순하고 결정적인 스케줄링을 지원한다.
+
+단, OS 스케쥴링이 Java Runtime 스케쥴링의 우선순위를 지원하지만 무조건 그렇게 동작하지는 않는다.
+
+## 우선순위
+
+java 에서 우선순위는 1~10 까지의 범위의 정수이며 값이 클 수록 우선순위가 높으며 기본값은 5이다. 
+
+우선순위가 높은 스레드를 실행하다가 중지, 양보 등 실행 불가능한 상태가 된 경우 우선순위가 낮은 스레드를 실행하게 되고 두 스레드의 우선순위가 같은 경우 `Round Robin` 방식에 의해 스레드를 선택한다.
+
+여기서 주의해야할점은 우선순위가 높은 스레드를 무조건 실행한다고 보장할 수 없다. OS 마다 다른 정책이 있으며 기아상태를 피하기 위해 스케줄러는 우선순위가 낮은 스레드를 선택할 수 있다. 
+
+### Java 우선순위 기본 제공 유형
+
+java의 Thread 에서는 기본적으로 3가지의 PRIORITY 유형을 제공한다. 
+
+- 최소우선순위 : `Thread.MIN_PRIORITY`
+- 기본우선순위 : `Thread.NORM_PRIORITY`
+- 최대우선순위 : `Thread.MAX_PRIORITY`
+
+```java
+public class Thread implements Runnalbe {
+	
+	// ...
+
+	public static int MIN_PRIORITY = 1;
+	public static int NORM_PRIORITY = 5;
+	public static int MAX_PRIORITY = 10;
+
+	// ...
+}
+```
+
+
+## API 
+
+### Thread#setPriority
+
+우선순위 값을 설정하기 위한 메서드로 1~10 사이의 값을 입력해야 하며 그 외에 값 입력시 오류가 발생한다. 
+
+```java
+public class Thread implements Runnable {
+	...
+
+	public final void setPriority(int newPriority) {  
+	    ThreadGroup g;  
+	    checkAccess();  
+	    if (newPriority > MAX_PRIORITY || newPriority < MIN_PRIORITY) {  
+	        throw new IllegalArgumentException();  
+	    }  
+	    if((g = getThreadGroup()) != null) {  
+	        if (newPriority > g.getMaxPriority()) {  
+	            newPriority = g.getMaxPriority();  
+	        }  
+	        setPriority0(priority = newPriority);  
+	    }  
+	}
+
+	private native void setPriority0(int newPriority);
+}
+```
+
+`priority` 범위가 벗어난 경우에는 `IllegalArgumentException` 예외를 발생하는것을 확인할 수 있다. 
+또한 새로운 `priority` 를 할당한 다음 native 메서드인 `setPriority0` 를 호출하여 설정해 주는 것을 확인할 수 있다. 
+
+> 참고 : 위 코드중 checkAccess() 는 JDK 17 에서 deprecated  되었다.
+
+```java
+public class Thread implements Runnable {
+	...
+	
+	@Deprecated(since="17", forRemoval=true)  
+	public final void checkAccess() {  
+	    @SuppressWarnings("removal")  
+	    SecurityManager security = System.getSecurityManager();  
+	    if (security != null) {  
+	        security.checkAccess(this);  
+	    }  
+	}
+	...
+}
+```
+
+### Thread#getPriority
+
+설정된 `priority` 를 조회해온다. 
+
+```java
+
+public class Thread implements Runnable {
+	...
+	
+	public final int getPriority() {  
+	    return priority;
+	}
+
+}
+```
+
+## 샘플
+
+이번 강의에서 스레드의 우선순위가 동작하는 방식을 체크하는 샘플 코드다 
+
+```java
+package section03.example05;  
+  
+public class ThreadPriorityExample {  
+    public static void main(String[] args) throws InterruptedException {  
+        Thread maxThread = new CountingThread("우선순위가 높은 스레드", Thread.MAX_PRIORITY);  
+        Thread normThread = new CountingThread("보통 우선순위 스레드", Thread.NORM_PRIORITY);  
+        Thread minThread = new CountingThread("우선순위가 낮은 스레드", Thread.MIN_PRIORITY);  
+  
+        maxThread.start();  
+        normThread.start();  
+        minThread.start();  
+  
+        maxThread.join();  
+        normThread.join();  
+        minThread.join();  
+  
+        System.out.println("main thread is done!");  
+    }  
+  
+    static class CountingThread extends Thread {  
+        private final String threadName;  
+        private int count = 0;  
+  
+        public CountingThread(String threadName, int priority) {  
+            this.threadName = threadName;  
+            setPriority(priority);  
+        }  
+  
+        @Override  
+        public void run() {  
+	        try {  
+			    Thread.sleep(1000);  
+			} catch (InterruptedException e) {  
+			    throw new RuntimeException(e);  
+			}
+            while (100_000_000_0 > count) {  
+                count++;  
+            }  
+            System.out.println(threadName + " : " + count);  
+        }  
+    }  
+}
+```
+
+처음 강사님이 샘플 1000만개 반복은 생각보다 우선순위 선택에 영향을 주지 않는거 같아 최소 10억번으로 처리해봤다
+
+```text 
+
+################################
+## 실행 1번 
+################################
+우선순위가 낮은 스레드 : 1000000000
+우선순위가 높은 스레드 : 1000000000
+보통 우선순위 스레드 : 1000000000
+main thread is done!
+################################
+## 실행 2번 
+################################
+우선순위가 높은 스레드 : 1000000000
+보통 우선순위 스레드 : 1000000000
+우선순위가 낮은 스레드 : 1000000000
+main thread is done!
+################################
+## 실행 3번 
+################################
+우선순위가 높은 스레드 : 1000000000
+우선순위가 낮은 스레드 : 1000000000
+보통 우선순위 스레드 : 1000000000
+main thread is done!
+################################
+## 실행 4번 
+################################
+우선순위가 높은 스레드 : 1000000000
+우선순위가 낮은 스레드 : 1000000000
+보통 우선순위 스레드 : 1000000000
+main thread is done!
+################################
+## 실행 5번 
+################################
+우선순위가 낮은 스레드 : 1000000000
+우선순위가 높은 스레드 : 1000000000
+보통 우선순위 스레드 : 1000000000
+main thread is done!
+```
+
+위 코드에 대해 수십 번 실행 시켜봤지만 연산처리속도가 너무 빨라서 그런것인지 아니면 OS 정책 때문인지 생각보다 고르게 실행 되었다. 
+
+이 부분은 나중에 다시 검증해봐할 것 같다. 
+
+#검증필요
 
